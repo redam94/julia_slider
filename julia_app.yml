@@ -1,0 +1,32 @@
+version: '3.3'
+services:
+  bayesapp:
+    image: redam94/plutotest:latest
+    ports:
+     - 30015:8080
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+     - traefik-public
+    logging:
+      driver: json-file
+    deploy:
+      replicas: 4
+      labels:
+        traefik.http.services.bayesapp-secured.loadbalancer.sticky.cookie: 'true'
+        traefik.http.routers.bayesapp.entrypoints: http
+        traefik.http.services.bayesapp-secured.loadbalancer.server.port: '8080'
+        traefik.http.middlewares.bayesapp.redirectscheme.scheme: https
+        traefik.http.middlewares.bayesapp.redirectscheme.permanent: 'true'
+        traefik.http.routers.bayesapp.rule: Host(`sliders.mattreda.pro`)
+        traefik.constraint-label: traefik-public
+        traefik.http.routers.bayesapp-secured.tls.certresolver: le
+        traefik.docker.network: traefik-public
+        traefik.enable: 'true'
+        traefik.http.routers.bayesapp-secured.entrypoints: https
+        traefik.http.routers.bayesapp-secured.rule: Host(`sliders.mattreda.pro`)
+      restart_policy:
+        condition: on-failure
+networks:
+  traefik-public:
+    external: true
