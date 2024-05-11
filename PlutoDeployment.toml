@@ -5,7 +5,3 @@ baked_notebookfile = true
 port = 8080
 host = "0.0.0.0"
 
-# You can also set Pluto's configuration here:
-[Pluto]
-[Pluto.compiler]
-threads = 2

@@ -11,9 +11,8 @@ services:
     logging:
       driver: json-file
     deploy:
-      replicas: 4
+      replicas: 1
       labels:
-        traefik.http.services.juliaapp-secured.loadbalancer.sticky.cookie: 'true'
         traefik.http.routers.juliaapp.entrypoints: http
         traefik.http.services.juliaapp-secured.loadbalancer.server.port: '8080'
         traefik.http.middlewares.juliaapp.redirectscheme.scheme: https
